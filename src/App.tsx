@@ -75,23 +75,29 @@ function App() {
   };
   
 
-  const handleSave = async (newClient: any) => {
+  const handleSave = useCallback(async (newClient: Item) => {
     try {
-      const createdClient = await createClient(newClient)
-
-      setItems(prevItems => [...prevItems, createdClient])
-
+      const createdClient = await createClient({
+        name: newClient.name,
+        email: newClient.email,
+        telefone: newClient.telefone,
+        data_cadastro: new Date().toISOString().split('T')[0], 
+      });
+  
+      setItems(prevItems => [...prevItems, createdClient]);
+  
       toaster.success({
         title: "Cadastro realizado com sucesso",
         description: `Cliente ${createdClient.name} foi cadastrado.`,
-      })
+      });
     } catch (error) {
       toaster.error({
         title: "Erro ao cadastrar",
         description: "Ocorreu um erro ao tentar cadastrar o cliente.",
-      })
+      });
     }
-  }
+  }, [setItems, toaster]); 
+  
   
 
   const handleSaveEdit = useCallback(async (data: Item) => {
@@ -149,7 +155,7 @@ function App() {
               <Table.Root key={variant} size="sm" variant={variant}>
                 <Table.Header>
                   <Table.Row>
-                    <Table.ColumnHeader>Name</Table.ColumnHeader>
+                    <Table.ColumnHeader>Nome</Table.ColumnHeader>
                     <Table.ColumnHeader>Email</Table.ColumnHeader>
                     <Table.ColumnHeader>Telefone</Table.ColumnHeader>
                     <Table.ColumnHeader>Data Cadastro</Table.ColumnHeader>

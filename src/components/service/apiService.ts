@@ -11,7 +11,7 @@ export interface Item {
   name: string;
   email: string;
   telefone: string;
-  data_cadastro?: Date;
+  data_cadastro?: string | undefined;
 }
 
 export const getData = async (): Promise<Item[]> => {
@@ -24,7 +24,7 @@ export const getData = async (): Promise<Item[]> => {
   }
 };
 
-export const createClient = async (data: { name: string }): Promise<Item> => {
+export const createClient = async (data: Item): Promise<Item> => {
   try {
     const response: AxiosResponse<Item> = await api.post('/Cliente', data);
    
